@@ -1,0 +1,166 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+body * {
+  margin: 0;
+  padding: 0;
+}
+
+.default_input .el-input__inner,
+.swiper_more_search .el-input__inner {
+  font-size: 17px;
+  font-weight: 800;
+  color: #484848;
+  height: 48px;
+}
+.swiper_more_search .el-input__inner {
+  border: none;
+  font-size: 18px;
+  padding-left: 60px;
+}
+.swiper_more_search .house_date .el-input__inner {
+  padding-left: 45px;
+}
+.swiper_more_search .house_date .el-icon-date:before {
+  color: #484848;
+  font-size: 24px;
+}
+.swiper_more_search .house_date .el-date-editor .el-range-separator,
+.swiper_more_search .house_date .el-date-editor .el-range__icon {
+  line-height: 66px;
+}
+.swiper_more_search .house_date .el-range-input {
+  font-size: 17px;
+  font-weight: 800;
+  color: #484848;
+}
+.swiper_more_search .address .el-input__prefix {
+  margin-left: 20px;
+}
+.default_input .el-input__inner:focus {
+  border-color: #dcdfe6;
+}
+.default_input input::-webkit-input-placeholder,
+.swiper_more_search input::-webkit-input-placeholder {
+  color: #484848;
+}
+.default_input .el-input__prefix,
+.swiper_more_search .address .el-input__prefix {
+  line-height: 56px;
+}
+.swiper_more_search .house_date .el-input__prefix {
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+}
+.default_input .el-input--prefix .el-input__inner {
+  padding-left: 50px;
+}
+.hotel_search_area .menulist span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+}
+
+/* 登录注册弹框样式————开始 */
+.default_dialog_style .el-input__inner {
+  flex: 1;
+  height: 100%;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: #484848;
+  background: transparent;
+}
+.default_dialog_style .el-checkbox__input.is-checked .el-checkbox__inner{
+  background-color: #008489;
+  border-color: #008489;
+}
+.default_dialog_style .el-checkbox__input.is-checked+.el-checkbox__label{
+  color: #008489;
+}
+
+/* 登录注册弹框样式————结束 */
+
+/* flex布局 */
+.displayFlex {
+  display: flex;
+}
+/* 横向换行 */
+.display_align_wrap {
+  align-items: center;
+  flex-wrap: wrap;
+}
+/* 横向不换行 */
+.display_align_nowrap {
+  align-items: center;
+}
+/* 横向两端布局 */
+.display_betten {
+  justify-content: space-between;
+  align-items: center;
+}
+/* 横向两端均匀布局 */
+.display_around {
+  justify-content: space-arround;
+  align-items: center;
+}
+/* 横向居中对齐 */
+.display_center {
+  justify-content: center;
+  align-items: center;
+}
+
+/* 垂直两端对齐 */
+.display_column_betten {
+  flex-direction: column;
+  justify-content: space-between;
+}
+/* 垂直两端对齐居中 */
+.display_column_betten_center {
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+/* 垂直两端均匀布局居中 */
+.display_column_arround_center {
+  flex-direction: column;
+  justify-content: space-arround;
+  align-items: center;
+}
+/* 垂直两端均匀布局 */
+.display_column_arround {
+  flex-direction: column;
+  justify-content: space-arround;
+}
+/* 垂直居中对齐 */
+.display_column_center_center {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+/* 垂直 */
+.display_column {
+  flex-direction: column;
+}
+
+/* 换行均匀分布 */
+.display_wrap_betten {
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* 空白线 */
+.default_line {
+  width: 100%;
+  height: 20rpx;
+  background: #f1f1f1;
+}
+
+/* 上边框 */
+.borderTop {
+  border-top: 1px solid #dcdfe6;
+}
