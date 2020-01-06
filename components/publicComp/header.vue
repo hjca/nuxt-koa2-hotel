@@ -54,7 +54,12 @@
       >
 
       <!-- 帮助 -->
-      <el-button type="text" class="displayFlex display_center">帮助</el-button>
+      <el-button
+        @click="openHelp"
+        type="text"
+        class="displayFlex display_center"
+        >帮助</el-button
+      >
 
       <!-- 注册 -->
       <el-button
@@ -79,6 +84,9 @@
       :title-text="dialgoText"
       @closeDialog="closeDialog"
     />
+
+    <!-- 帮助文档 -->
+    <help-word />
   </div>
 </template>
 
@@ -86,12 +94,14 @@
 import SvgComp from '@/components/publicComp/svg.vue'
 import SearchComp from '@/components/publicComp/searchInp.vue'
 import RegisLogin from '@/components/publicComp/registeredLogin.vue'
+import HelpWord from '@/components/publicComp/helpWord.vue'
 export default {
   name: '',
   components: {
     SvgComp,
     SearchComp,
-    RegisLogin
+    RegisLogin,
+    HelpWord
   },
   data() {
     return {
@@ -134,6 +144,10 @@ export default {
     userLogin() {
       this.regLog = true
       this.dialgoText = '登录'
+    },
+    // 打开帮助
+    openHelp() {
+      this.$store.dispatch('globalData/useHelpWord', true)
     }
   }
 }

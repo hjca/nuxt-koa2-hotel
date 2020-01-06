@@ -81,6 +81,9 @@ body * {
 .default_dialog_style .el-checkbox__input.is-checked+.el-checkbox__label{
   color: #008489;
 }
+.hotel_search_area .el-input__inner:focus{
+  border-color: #008489;
+}
 
 /* 登录注册弹框样式————结束 */
 
@@ -163,4 +166,26 @@ body * {
 /* 上边框 */
 .borderTop {
   border-top: 1px solid #dcdfe6;
+}
+/* 下边框 */
+.borderBottom {
+  border-bottom: 1px solid #dcdfe6;
+}
+
+/* 文本居中 */
+.textCenter{
+  text-align: center;
+}
+
+/* 文本两端对齐 */
+.textAlignment{
+  text-align: justify
+}
+
+/* 折叠面板 */
+.global_help_word .el-collapse-item__header{
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 19px;
+  color: rgb(72, 72, 72);
 }

@@ -27,7 +27,7 @@
             :class="[
               'default_dialog_email displayFlex display_betten',
               emailFouce && !emialError ? 'fouceInp' : '',
-              emialError && !email ? 'errorInp' : ''
+              emialError ? 'errorInp' : ''
             ]"
           >
             <el-input
@@ -48,7 +48,7 @@
             :class="[
               'default_dialog_code displayFlex display_betten',
               codeFocus && !codeError ? 'fouceInp' : '',
-              codeError && !emailCode ? 'errorInp' : ''
+              codeError ? 'errorInp' : ''
             ]"
           >
             <el-input
@@ -60,6 +60,51 @@
           </div>
           <!-- 错误信息 -->
           <div v-if="codeError" class="error_msg">{{ codeError }}</div>
+        </div>
+
+        <!-- 设置密码 -->
+        <div class="marginBottom">
+          <div
+            :class="[
+              'default_dialog_code displayFlex display_betten',
+              setPassFouce && !setPasswordError ? 'fouceInp' : '',
+              setPasswordError ? 'errorInp' : ''
+            ]"
+          >
+            <el-input
+              v-model="setPassword"
+              @focus="setfocusCode"
+              @blur="setPassFouce = false"
+              minlength="4"
+              placeholder="请设置登录密码"
+            ></el-input>
+          </div>
+          <!-- 错误信息 -->
+          <div v-if="setPasswordError" class="error_msg">
+            {{ setPasswordError }}
+          </div>
+        </div>
+
+        <!-- 确认密码 -->
+        <div class="marginBottom">
+          <div
+            :class="[
+              'default_dialog_code displayFlex display_betten',
+              surePassFouce && !surePasswordError ? 'fouceInp' : '',
+              surePasswordError ? 'errorInp' : ''
+            ]"
+          >
+            <el-input
+              v-model="surePassword"
+              @focus="surefocusCode"
+              @blur="codeFocus = false"
+              placeholder="请确认登录证码"
+            ></el-input>
+          </div>
+          <!-- 错误信息 -->
+          <div v-if="surePasswordError" class="error_msg">
+            {{ surePasswordError }}
+          </div>
         </div>
 
         <!-- 注册按钮 -->
@@ -113,11 +158,11 @@
             :class="[
               'default_dialog_account displayFlex display_betten',
               accountFouce && !accountErroe ? 'fouceInp' : '',
-              accountErroe && !account ? 'errorInp' : ''
+              accountErroe ? 'errorInp' : ''
             ]"
           >
             <el-input
-              v-model="email"
+              v-model="account"
               @focus="focusAccount"
               @blur="accountFouce = false"
               placeholder="请输入邮箱"
@@ -133,7 +178,7 @@
             :class="[
               'default_dialog_password displayFlex display_betten',
               passwordFocus && !passwordError ? 'fouceInp' : '',
-              passwordError && !password ? 'errorInp' : ''
+              passwordError ? 'errorInp' : ''
             ]"
           >
             <el-input
@@ -196,15 +241,27 @@ export default {
       email: '', // 邮箱
       emialError: '', // 邮箱错误提示
       emailFouce: false, // 邮箱聚焦
+
       emailCode: '', // 邮箱验证码
       codeError: '', // 邮箱验证码错误提示
       codeFocus: false, // 邮箱验证码聚焦
+
+      setPassword: '', // 设置密码
+      setPasswordError: '', // 设置密错误提示
+      setPassFouce: false, // 设置密码聚焦
+
+      surePassword: '', // 确认密码
+      surePasswordError: '', // 确认密错误提示
+      surePassFouce: false, // 确认密码聚焦
+
       account: '', // 用户账号
       accountFouce: false, // 账号聚焦
       accountErroe: '', // 账号错误提示
+
       password: '', // 用户密码
       passwordFocus: false, // 密码聚焦
       passwordError: '', // 密码错误提示
+
       remmberPassword: false // 是否记住密码，false：不记住  true：记住
     }
   },
@@ -218,6 +275,18 @@ export default {
     },
     emailCode() {
       this.codeError = ''
+    },
+    setPassword() {
+      this.setPasswordError = ''
+    },
+    surePassword() {
+      this.surePasswordError = ''
+    },
+    account() {
+      this.accountErroe = ''
+    },
+    password() {
+      this.passwordError = ''
     }
   },
 
@@ -236,6 +305,14 @@ export default {
     focusCode() {
       this.codeFocus = true
     },
+    // 设置密码聚焦
+    setfocusCode() {
+      this.setPassFouce = true
+    },
+    // 确认密码聚焦
+    surefocusCode() {
+      this.surePassFouce = true
+    },
     // 账号聚焦
     focusAccount() {
       this.accountFouce = true
@@ -248,22 +325,53 @@ export default {
     immRegisted() {
       const emailVal = this.email
       const codeVal = this.emailCode
+      const setPass = this.setPassword
+      const surePass = this.surePassword
 
       if (!emailVal) {
         this.emialError = '请输入邮箱'
-      } else if (emailVal && !isEmail.test(emailVal)) {
+      } else if (emailVal && !isEmail(emailVal)) {
         this.emialError = '邮箱格式不正确'
-      } else if (!codeVal) {
+      }
+      if (!codeVal) {
         this.codeError = '请输入邮箱验证码'
+      }
+      if (!setPass) {
+        this.setPasswordError = '请设置登录密码'
+      } else if (setPass && setPass.length < 4) {
+        this.setPasswordError = '密码最低长度为4，请重新输入'
+      }
+      if (!surePass) {
+        this.surePasswordError = '请确认登录密码'
+      }
+      if (setPass && surePass && setPass !== surePass) {
+        this.surePasswordError = '两次密码不一致，请重新输入'
+      }
+      if (
+        emailVal &&
+        codeVal &&
+        setPass &&
+        surePass &&
+        isEmail(emailVal) &&
+        setPass.length >= 4 &&
+        setPass === surePass
+      ) {
+        console.log('立即注册')
       }
     },
     // 立即登录
     immediatelyLogin() {
-      if (!this.account && !this.password) {
+      if (!this.account) {
         this.accountErroe = '请输入邮箱'
+      }
+      if (!this.password) {
         this.passwordError = '请输入密码'
-      } else if (this.account && !isEmail.test(this.account)) {
+      }
+      if (this.account && !isEmail(this.account)) {
         this.accountErroe = '邮箱格式不正确'
+      }
+      if (this.account && this.password && isEmail(this.account)) {
+        console.log('正确')
       }
     }
   }

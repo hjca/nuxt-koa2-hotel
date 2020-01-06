@@ -10,6 +10,7 @@
 
 <script>
 import SwiperComp from '@/components/home/swiperComp.vue'
+
 export default {
   name: '',
   components: {
