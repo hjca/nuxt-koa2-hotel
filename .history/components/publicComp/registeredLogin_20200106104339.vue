@@ -36,9 +36,7 @@
               @blur="emailFouce = false"
               placeholder="请输入邮箱"
             ></el-input>
-            <el-button @click="sendEmailCode" type="text">{{
-              timeText
-            }}</el-button>
+            <el-button type="text">发送验证码</el-button>
           </div>
           <!-- 错误信息 -->
           <div v-if="emialError" class="error_msg">{{ emialError }}</div>
@@ -264,9 +262,6 @@ export default {
       passwordFocus: false, // 密码聚焦
       passwordError: '', // 密码错误提示
 
-      timer: null, // 定时器
-      timeText: '发送验证码',
-
       remmberPassword: false // 是否记住密码，false：不记住  true：记住
     }
   },
@@ -377,15 +372,6 @@ export default {
       }
       if (this.account && this.password && isEmail(this.account)) {
         console.log('正确')
-      }
-    },
-    // 发送短信验证码
-    sendEmailCode() {
-      const emailVal = this.email
-      if (!emailVal) {
-        this.emialError = '请输入邮箱'
-      } else if (emailVal && !isEmail(emailVal)) {
-        this.emialError = '邮箱格式不正确'
       }
     }
   }
