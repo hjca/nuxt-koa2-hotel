@@ -141,11 +141,5 @@ router.post('/verify', async (ctx, next) => {
     subject: '《自学习仿爱彼迎》注册码',
     html: `您在《自学习仿爱彼迎》中注册，您的邀请码是${ko.code}`
   }
-  await transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      return console.log('error')
-    } else {
-      Store.hmset
-    }
-  })
+  await transporter.sendMail(mailOptions)
 })
