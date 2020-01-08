@@ -2,7 +2,41 @@ import Koa from 'koa'
 import consola from 'consola'
 import { Nuxt, Builder } from 'nuxt'
 
+import mongoose from 'mongoose'
+import bodyParser from 'koa-bodyparser'
+import session from 'koa-generic-session'
+import Redis from 'koa-redis'
+import json from 'koa-json'
+import dbConfig from './dbs/config'
+import passport from './interface/utils/passport'
+import users from './interface/user'
+
 const app = new Koa()
+
+app.keys = ['ht', 'keyskeys']
+app.proxy = true
+app.use(
+  session({
+    key: 'ht',
+    prefix: 'ht:uid',
+    store: new Redis()
+  })
+)
+app.use(
+  bodyParser({
+    extendTypes: ['json', 'form', 'text']
+  })
+)
+app.use(json())
+
+// 链接数据库
+mongoose.connect(dbConfig.dbs, {
+  useNewUrlParser: true
+})
+
+// 处理登录
+app.use(passport.initialize())
+app.use(passport.session())
 
 // Import and Set Nuxt.js options
 const config = require('../nuxt.config.js')
@@ -25,6 +59,7 @@ async function start() {
     await nuxt.ready()
   }
 
+  app.use(users.routes()).use(users.allowedMethods())
   app.use((ctx) => {
     ctx.status = 200
     ctx.respond = false // Bypass Koa's built-in response handling

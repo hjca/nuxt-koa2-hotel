@@ -36,9 +36,12 @@
               @blur="emailFouce = false"
               placeholder="请输入邮箱"
             ></el-input>
-            <el-button @click="sendEmailCode" type="text">{{
-              timeText
-            }}</el-button>
+            <el-button
+              :disabled="isDisabled"
+              @click="sendEmailCode"
+              type="text"
+              >{{ timeText }}</el-button
+            >
           </div>
           <!-- 错误信息 -->
           <div v-if="emialError" class="error_msg">{{ emialError }}</div>
@@ -266,6 +269,9 @@ export default {
 
       timer: null, // 定时器
       timeText: '发送验证码',
+      timeNum: 10, // 10秒钟
+      tempTime: 10,
+      isDisabled: false, // 是否禁用按钮
 
       remmberPassword: false // 是否记住密码，false：不记住  true：记住
     }
@@ -386,7 +392,33 @@ export default {
         this.emialError = '请输入邮箱'
       } else if (emailVal && !isEmail(emailVal)) {
         this.emialError = '邮箱格式不正确'
+      } else {
+        this.isDisabled = true
+        this.timer = setInterval(() => {
+          if (this.timeNum < 0) {
+            this.timeText = '重新发送'
+            clearInterval(this.timer)
+            this.isDisabled = false
+            this.timeNum = this.tempTime
+          } else {
+            this.timeText = `已发送${this.timeNum--}`
+          }
+        }, 1000)
+
+        // 开始请求数据
+        this.startEmailCode()
       }
+    },
+    // 开始发送邮箱验证码
+    startEmailCode() {
+      const that = this
+      this.$axios
+        .post('/users/verify', {
+          useremail: that.email
+        })
+        .then((res) => {
+          console.log(res)
+        })
     }
   }
 }

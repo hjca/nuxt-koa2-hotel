@@ -7,4 +7,9 @@ const instance = axios.create({
   headers: {}
 })
 
+// response拦截
+instance.interceptors.response.use((res) => {
+  console.log(res)
+})
+
 export default instance

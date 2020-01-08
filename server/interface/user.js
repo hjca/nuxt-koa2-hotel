@@ -145,7 +145,35 @@ router.post('/verify', async (ctx, next) => {
     if (error) {
       return console.log('error')
     } else {
-      Store.hmset
+      Store.hmset(`nodemail:${ko.email}`, 'code', ko.code, 'expire', koa.expire)
     }
   })
+  ctx.body = {
+    code: 0,
+    msg: '验证码已发送，可能会有延时，有效期1分钟'
+  }
 })
+
+// 退出
+router.get('/exit', async (ctx, next) => {
+  await ctx.logout()
+  if (!ctx.isAuthenticated()) {
+    ctx.body = {
+      code: 0
+    }
+  } else {
+    ctx.body = {
+      code: -1
+    }
+  }
+})
+
+// 获取用户信息
+router.get('/getUser', async (ctx) => {
+  if (ctx.isAuthenticated()) {
+    console.log(ctx.session.passport)
+    const { username, email } = ctx.session.passport.user
+  }
+})
+
+export default router
