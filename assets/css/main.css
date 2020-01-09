@@ -84,6 +84,10 @@ body * {
 .hotel_search_area .el-input__inner:focus{
   border-color: #008489;
 }
+.passwordInp .el-input .el-input__clear{
+  display: flex;
+  align-items: center;
+}
 
 /* 登录注册弹框样式————结束 */
 

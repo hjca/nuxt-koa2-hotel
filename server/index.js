@@ -12,6 +12,8 @@ import passport from './interface/utils/passport'
 import users from './interface/user'
 
 const app = new Koa()
+const host = process.env.HOST || '127.0.0.1'
+const port = process.env.PORT || 3000
 
 app.keys = ['ht', 'keyskeys']
 app.proxy = true
@@ -46,10 +48,10 @@ async function start() {
   // Instantiate nuxt.js
   const nuxt = new Nuxt(config)
 
-  const {
-    host = process.env.HOST || '127.0.0.1',
-    port = process.env.PORT || 3000
-  } = nuxt.options.server
+  // const {
+  //   host = process.env.HOST || '127.0.0.1',
+  //   port = process.env.PORT || 3000
+  // } = nuxt.options.server
 
   // Build in development
   if (config.dev) {

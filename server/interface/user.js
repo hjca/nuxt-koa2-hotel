@@ -5,7 +5,6 @@ import User from '../dbs/models/user'
 import Passport from './utils/passport'
 import Email from '../dbs/config'
 import axios from './utils/axios'
-import { async } from 'q'
 
 let router = new Router({
   prefix: '/users'
@@ -21,6 +20,8 @@ router.post('/signup', async (ctx) => {
   if (code) {
     const saveCode = await Store.hget(`nodemail:${email}`, 'code')
     const saveExpire = await Store.hget(`nodemail:${email}`, 'expire')
+    console.log(saveCode)
+    console.log(saveExpire)
     if (code == saveCode) {
       if (new Date().getTime() - saveExpire > 0) {
         ctx.body = {
@@ -112,28 +113,26 @@ router.post('/signin', async (ctx, next) => {
 // 发送验证码
 router.post('/verify', async (ctx, next) => {
   let useremail = ctx.request.body.useremail
-  const saveExpire = await Store.hget(`nodemail:${email}`, 'expire')
+  const saveExpire = await Store.hget(`nodemail:${useremail}`, 'expire')
 
   if (saveExpire && new Date().getTime() - saveExpire < 0) {
     ctx.body = {
       code: -1,
       msg: '验证码请求过于频繁，1分钟内1次'
     }
+    return false
   }
   let transporter = nodeMailer.createTransport({
-    host: Email.smtp.host,
-    port: 587,
-    secure: false,
+    service: 'qq',
     auth: {
       user: Email.smtp.user,
       pass: Email.smtp.pass
     }
   })
-
   let ko = {
     code: Email.smtp.code(),
     expire: Email.smtp.expire(),
-    email: ctx.request.body.email
+    email: ctx.request.body.useremail
   }
   let mailOptions = {
     from: `"认证邮件"<${Email.smtp.user}>`,
@@ -143,8 +142,9 @@ router.post('/verify', async (ctx, next) => {
   }
   await transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      return console.log('error')
+      return console.log('发送验证码error')
     } else {
+      console.log(Store)
       Store.hmset(`nodemail:${ko.email}`, 'code', ko.code, 'expire', koa.expire)
     }
   })

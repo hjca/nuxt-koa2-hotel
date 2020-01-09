@@ -71,7 +71,7 @@
         <div class="marginBottom">
           <div
             :class="[
-              'default_dialog_code displayFlex display_betten',
+              'default_dialog_code displayFlex display_betten passwordInp',
               setPassFouce && !setPasswordError ? 'fouceInp' : '',
               setPasswordError ? 'errorInp' : ''
             ]"
@@ -80,6 +80,7 @@
               v-model="setPassword"
               @focus="setfocusCode"
               @blur="setPassFouce = false"
+              show-password
               minlength="4"
               placeholder="请设置登录密码"
             ></el-input>
@@ -94,7 +95,7 @@
         <div class="marginBottom">
           <div
             :class="[
-              'default_dialog_code displayFlex display_betten',
+              'default_dialog_code displayFlex display_betten passwordInp',
               surePassFouce && !surePasswordError ? 'fouceInp' : '',
               surePasswordError ? 'errorInp' : ''
             ]"
@@ -103,6 +104,7 @@
               v-model="surePassword"
               @focus="surefocusCode"
               @blur="codeFocus = false"
+              show-password
               placeholder="请确认登录证码"
             ></el-input>
           </div>
@@ -181,7 +183,7 @@
         <div class="marginBottom">
           <div
             :class="[
-              'default_dialog_password displayFlex display_betten',
+              'default_dialog_password displayFlex display_betten passwordInp',
               passwordFocus && !passwordError ? 'fouceInp' : '',
               passwordError ? 'errorInp' : ''
             ]"
@@ -269,8 +271,8 @@ export default {
 
       timer: null, // 定时器
       timeText: '发送验证码',
-      timeNum: 10, // 10秒钟
-      tempTime: 10,
+      timeNum: 60, // 10秒钟
+      tempTime: 60,
       isDisabled: false, // 是否禁用按钮
 
       remmberPassword: false // 是否记住密码，false：不记住  true：记住
@@ -367,7 +369,15 @@ export default {
         setPass.length >= 4 &&
         setPass === surePass
       ) {
-        console.log('立即注册')
+        this.$axios
+          .post('/users/signup', {
+            email: emailVal,
+            password: setPass,
+            code: codeVal
+          })
+          .then((res) => {
+            console.log(res)
+          })
       }
     },
     // 立即登录
@@ -417,7 +427,10 @@ export default {
           useremail: that.email
         })
         .then((res) => {
-          console.log(res)
+          that.$message({
+            message: res.data.msg,
+            type: 'success'
+          })
         })
     }
   }
